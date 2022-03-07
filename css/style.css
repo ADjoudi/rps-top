@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&family=Monoton&display=swap');
+
+/*///////////
+////globals////
+///////////*/
+html {
+    height: 100%;
+}
+
+
+body, .gameStart, .gameEnd{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body{
+    min-height: 100%;
+    font-family: 'Gabriela', serif;
+    color: #02305A;
+    background-color: rgba(188, 215, 254, 0.15);
+    justify-content: space-between;
+}
+
+.restart, .machineScore, .playerScore{
+    font-family: 'Monoton', cursive;
+    font-size: 96px;
+    font-weight: 400;
+    color: rgb(73, 73, 73);
+}
+
+/*///////////
+////choice////
+///////////*/
+
+.choice{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8em;
+    margin-top: 4em;
+}
+
+/*///////////
+////score////
+///////////*/
+
+.score{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4em;
+}
+
+.score h2{
+    margin: 0.5em 0em 1em 0em;
+}
+
+/*//////////////
+////endgame////
+////////////*/
+
+.restart{
+    font-size: 48px;
+}

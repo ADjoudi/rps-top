@@ -98,5 +98,5 @@ let game = () =>{
     }
 }
 
-game();
+//game();
 
