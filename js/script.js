@@ -1,20 +1,28 @@
-let getComputerSelection = () =>{
+let playerSelection = null;
+let machineSelection = null;
+let scoreCap = 0;
+
+const getComputerSelection = () =>{
     let options = ["rock", "paper", "scissors"];
     let choice = options[Math.floor(Math.random()*options.length)];
     return choice;
 }
 
-let getPlayerSelection = () =>{
-    let input;
-    do{
-        input = prompt("enter your choice").toLowerCase().trim();
-       
-    }while(!input.match(/^(rock|paper|scissors)$/));
-
-    return input;
+const setPlayerSelection = (choice) =>{
+    playerSelection = choice;
+}
+const setMachineSelection = () =>{
+    machineSelection = getComputerSelection();
 }
 
-let playRound = (computerSelection, playerSelection) => {
+const updateMachineScore = () =>{
+    machineScore.textContent = (parseInt(machineScore.textContent) + 1).toString();
+} 
+const updatePlayerScore = () =>{
+    playerScore.textContent = (parseInt(playerScore.textContent) + 1).toString();
+} 
+
+const playRound = (computerSelection, playerSelection) => {
     // score = 0 machine won =1 tie =2 player won 
     let score = 1;
     switch (playerSelection){
@@ -62,41 +70,111 @@ let playRound = (computerSelection, playerSelection) => {
         default:
             console.log("something went wrong");
     }
-    return score;
     
+    return score;
 };
 
-let game = () =>{
-    let playerScore = 0;
-    let machineScore = 0;
-    for(let counter = 1; counter <=5; counter++){
-        let machineSelection = getComputerSelection();
-        let playerSelection = getPlayerSelection();
-        let result = playRound(machineSelection,playerSelection);
-        switch (result){
-            case 0:
-                machineScore++;
-                break;
-            case 1:
+const game = (choice) =>{
+    
+    switch(choice){
+        case 'rock':
+            setPlayerSelection('rock');
+            break;
+        case 'paper':
+            setPlayerSelection('paper');
+            break;
+        case 'scissors':
+            setPlayerSelection('scissors');
+            break;
+        default:
+            console.log('click event player selection unexpected behaviour');
+    }
+    setMachineSelection();
 
-                break;
-            case 2:
-                playerScore++;
-                break;
-            default:
-                console.log("unexpected error");
+    let result = playRound(machineSelection,playerSelection);
+    // result = 0 machine won =1 tie =2 player won 
+    switch (result){
+        case 0:
+            updateMachineScore();
+            break;
+        case 1:
+
+            break;
+        case 2:
+            updatePlayerScore();
+            break;
+        default:
+            console.log("unexpected error");
+    }
+    
+
+    
+}
+
+const updateWinnerMessage = (message) =>{
+    winnerMessage.textContent = message;
+}
+
+let checkForWinner = (cap) =>{
+    if(cap >= 5){
+        images.forEach((image) =>{
+            // remove clickability from choices
+        })
+        if (playerScore.textContent > machineScore.textContent){
+            updateWinnerMessage("You are the winner!!!");
         }
-    }
-    if (playerScore > machineScore){
-        console.log("You are the winner!!!");
-    }
-    if (playerScore < machineScore){
-        console.log("The Machines Win!!!");
-    }
-    if (playerScore == machineScore){
-        console.log("It's A Draw!!!");
+        if (playerScore.textContent < machineScore.textContent){
+            updateWinnerMessage("The Machines Win!!!");
+        }
+        if (playerScore.textContent == machineScore.textContent){
+            updateWinnerMessage("It's A Draw!!!");
+        }
     }
 }
 
-//game();
+////////////////////////////
+//Site elements behaviour//
+//////////////////////////
 
+// images
+const images = document.querySelectorAll('img');
+images.forEach((image)=>{
+
+    image.addEventListener('mouseover', (e)=>{
+        e.target.classList.toggle('imageHover');
+        e.target.style.cursor ="pointer";
+    });
+
+    image.addEventListener('mouseout', (e)=>{
+        e.target.classList.toggle('imageHover');
+    });
+    
+    image.addEventListener('click', (e)=>{
+        game(e.target.alt);
+        scoreCap++;
+        winnerMessage.textContent = `Round ${scoreCap}`;
+        checkForWinner(scoreCap);
+    });
+
+});
+
+// score
+const machineScore = document.querySelector('.machineScore');
+const playerScore = document.querySelector('.playerScore');
+
+// endGame
+const winnerMessage = document.querySelector('.verdict');
+const restart = document.querySelector('.restart');
+
+restart.addEventListener('click', ()=>{
+    //restore clickability to choices
+    machineScore.textContent = 0;
+    playerScore.textContent = 0;
+
+    scoreCap = 0;
+    winnerMessage.textContent = `Round ${scoreCap}`;
+});
+
+restart.addEventListener('mouseover', (e)=>{
+    e.target.style.cursor ="pointer";
+});
