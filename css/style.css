@@ -23,10 +23,12 @@ body{
 }
 
 .machineScore, .playerScore{
+    width: 2em;
+    text-align: center;
     font-family: 'Monoton', cursive;
     font-size: 96px;
     font-weight: 400;
-    color: rgb(73, 73, 73);
+    color: rgb(73, 73, 73); 
 }
 
 /*///////////
