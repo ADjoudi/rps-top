@@ -21,6 +21,10 @@ const updateMachineScore = () =>{
 const updatePlayerScore = () =>{
     playerScore.textContent = (parseInt(playerScore.textContent) + 1).toString();
 } 
+const updateWinnerMessage = (message) =>{
+    winnerMessage.textContent = message;
+}
+
 
 const playRound = (computerSelection, playerSelection) => {
     // score = 0 machine won =1 tie =2 player won 
@@ -28,43 +32,43 @@ const playRound = (computerSelection, playerSelection) => {
     switch (playerSelection){
         case "rock":
             if(computerSelection == "rock"){
-                console.log("Draw");
+                updateWinnerMessage("Draw");
             }
             if(computerSelection == "paper"){
                 score--;
-                console.log("You Lost");
+                updateWinnerMessage("You lost this round");
             }
             if(computerSelection == "scissors"){
                 score++;
-                console.log("You Won");
+                updateWinnerMessage("You won this round");
             }
             break;
 
         case "paper":
             if(computerSelection == "rock"){
                 score++;
-                console.log("You Won");
+                updateWinnerMessage("You won this round");
             }
             if(computerSelection == "paper"){
-                console.log("Draw");
+                updateWinnerMessage("Draw");
             }
             if(computerSelection == "scissors"){
                 score--;
-                console.log("You Lost");
+                updateWinnerMessage("You lost this round");
             }
             break;
 
         case "scissors":
             if(computerSelection == "rock"){
                 score--;
-                console.log("You Lost");
+                updateWinnerMessage("You lost this round");
             }
             if(computerSelection == "paper"){
                 score++;
-                console.log("You Won");
+                updateWinnerMessage("You won this round");
             }
             if(computerSelection == "scissors"){
-                console.log("Draw");
+                updateWinnerMessage("Draw");
             }
             break;
         default:
@@ -111,25 +115,26 @@ const game = (choice) =>{
     
 }
 
-const updateWinnerMessage = (message) =>{
-    winnerMessage.textContent = message;
-}
 
-let checkForWinner = (cap) =>{
-    if(cap >= 5){
-        images.forEach((image) =>{
-            // remove clickability from choices
-        })
+let displayVerdict = () =>{
+    
         if (playerScore.textContent > machineScore.textContent){
+            playerScore.textContent = 0;
+            machineScore.textContent = 0;
             updateWinnerMessage("You are the winner!!!");
-        }
-        if (playerScore.textContent < machineScore.textContent){
+            scoreCap = 0;
+        }else if (playerScore.textContent < machineScore.textContent){
+            playerScore.textContent = 0;
+            machineScore.textContent = 0;
             updateWinnerMessage("The Machines Win!!!");
-        }
-        if (playerScore.textContent == machineScore.textContent){
+            scoreCap = 0;
+        }else if (playerScore.textContent == machineScore.textContent){
+            playerScore.textContent = 0;
+            machineScore.textContent = 0;
             updateWinnerMessage("It's A Draw!!!");
+            scoreCap = 0;
         }
-    }
+    
 }
 
 ////////////////////////////
@@ -152,8 +157,9 @@ images.forEach((image)=>{
     image.addEventListener('click', (e)=>{
         game(e.target.alt);
         scoreCap++;
-        winnerMessage.textContent = `Round ${scoreCap}`;
-        checkForWinner(scoreCap);
+        if(scoreCap >= 5){
+            displayVerdict();
+        }
     });
 
 });
@@ -164,17 +170,3 @@ const playerScore = document.querySelector('.playerScore');
 
 // endGame
 const winnerMessage = document.querySelector('.verdict');
-const restart = document.querySelector('.restart');
-
-restart.addEventListener('click', ()=>{
-    //restore clickability to choices
-    machineScore.textContent = 0;
-    playerScore.textContent = 0;
-
-    scoreCap = 0;
-    winnerMessage.textContent = `Round ${scoreCap}`;
-});
-
-restart.addEventListener('mouseover', (e)=>{
-    e.target.style.cursor ="pointer";
-});
